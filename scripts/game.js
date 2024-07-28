@@ -1,6 +1,13 @@
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
 
+const background = new Image();
+background.src = 'images/background.png';
+
+background.onload = () => {
+    update(); // Start the game loop after the background image is loaded
+};
+
 const player1 = {
     x: 50,
     y: 500,
@@ -35,6 +42,10 @@ const player2 = {
 
 function resetGame() {
     location.reload(); // Refresh the page
+}
+
+function drawBackground() {
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 }
 
 function drawPlayer(player) {
@@ -75,6 +86,7 @@ function detectWalls(player) {
 
 function update() {
     clear();
+    drawBackground();
     newPos(player1);
     newPos(player2);
     drawPlayer(player1);
@@ -202,8 +214,6 @@ function isColliding(player1, player2) {
              player1.y + player1.height < player2.y ||
              player1.y > player2.y + player2.height);
 }
-
-update();
 
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
