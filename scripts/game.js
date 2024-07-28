@@ -79,16 +79,16 @@ function keyDown(e) {
     else if (e.key === 'ArrowLeft') moveLeft(player1);
     else if (e.key === 'ArrowUp') moveUp(player1);
     else if (e.key === 'ArrowDown') moveDown(player1);
-    else if (e.key === 'k') kick(player1);
-    else if (e.key === 'p') punch(player1);
+    else if (e.key === 'k') kick(player1, player2);
+    else if (e.key === 'p') punch(player1, player2);
 
     // Player 2 controls
     if (e.key === 'd') moveRight(player2);
     else if (e.key === 'a') moveLeft(player2);
     else if (e.key === 'w') moveUp(player2);
     else if (e.key === 's') moveDown(player2);
-    else if (e.key === 'l') kick(player2);
-    else if (e.key === ';') punch(player2);
+    else if (e.key === 'l') kick(player2, player1);
+    else if (e.key === ';') punch(player2, player1);
 }
 
 function keyUp(e) {
@@ -101,14 +101,31 @@ function keyUp(e) {
     else if (e.key === 'w' || e.key === 's') player2.dy = 0;
 }
 
-function kick(player) {
-    player.color = 'yellow';
-    setTimeout(() => player.color = player.defaultColor, 200);
+function kick(attacker, defender) {
+    if (isColliding(attacker, defender)) {
+        defender.color = 'lightgrey';
+        setTimeout(() => defender.color = defender.defaultColor, 200);
+    } else {
+        attacker.color = 'yellow';
+        setTimeout(() => attacker.color = attacker.defaultColor, 200);
+    }
 }
 
-function punch(player) {
-    player.color = 'green';
-    setTimeout(() => player.color = player.defaultColor, 200);
+function punch(attacker, defender) {
+    if (isColliding(attacker, defender)) {
+        defender.color = 'lightgrey';
+        setTimeout(() => defender.color = defender.defaultColor, 200);
+    } else {
+        attacker.color = 'green';
+        setTimeout(() => attacker.color = attacker.defaultColor, 200);
+    }
+}
+
+function isColliding(player1, player2) {
+    return !(player1.x + player1.width < player2.x ||
+             player1.x > player2.x + player2.width ||
+             player1.y + player1.height < player2.y ||
+             player1.y > player2.y + player2.height);
 }
 
 update();
