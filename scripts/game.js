@@ -12,7 +12,9 @@ const player1 = {
     dy: 0,
     health: 100,
     defaultColor: 'red',
-    isDefeated: false
+    isDefeated: false,
+    isBlocking: false,
+    canAttack: true
 };
 
 const player2 = {
@@ -26,7 +28,9 @@ const player2 = {
     dy: 0,
     health: 100,
     defaultColor: 'blue',
-    isDefeated: false
+    isDefeated: false,
+    isBlocking: false,
+    canAttack: true
 };
 
 function drawPlayer(player) {
@@ -94,22 +98,24 @@ function moveLeft(player) {
 
 function keyDown(e) {
     // Player 1 controls
-    if (!player1.isDefeated) {
+    if (!player1.isDefeated && player1.canAttack) {
         if (e.key === 'ArrowRight') moveRight(player1);
         else if (e.key === 'ArrowLeft') moveLeft(player1);
         else if (e.key === 'ArrowUp') moveUp(player1);
         else if (e.key === 'ArrowDown') moveDown(player1);
         else if (e.key === 'k') kick(player1, player2);
         else if (e.key === 'p') punch(player1, player2);
+        else if (e.key === 'b') player1.isBlocking = true;
     }
 
     // Player 2 controls
-    if (!player2.isDefeated) {
+    if (!player2.isDefeated && player2.canAttack) {
         if (e.key === 'd') moveRight(player2);
         else if (e.key === 'a') moveLeft(player2);
         else if (e.key === 'w') moveUp(player2);
         else if (e.key === 's') moveDown(player2);
         else if (e.key === 'l') kick(player2, player1);
+        else if (e.key === 'o') player2.isBlocking = true;
         else if (e.key === ';') punch(player2, player1);
     }
 }
@@ -118,18 +124,21 @@ function keyUp(e) {
     // Player 1 stop movement
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') player1.dx = 0;
     else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') player1.dy = 0;
+    else if (e.key === 'b') player1.isBlocking = false;
 
     // Player 2 stop movement
     if (e.key === 'd' || e.key === 'a') player2.dx = 0;
     else if (e.key === 'w' || e.key === 's') player2.dy = 0;
+    else if (e.key === 'o') player2.isBlocking = false;
 }
 
 function kick(attacker, defender) {
-    if (defender.isDefeated) return;
+    if (defender.isDefeated || !attacker.canAttack) return;
     attacker.color = 'yellow';
     setTimeout(() => attacker.color = attacker.defaultColor, 200);
     if (isColliding(attacker, defender)) {
-        defender.health -= 20;
+        let damage = defender.isBlocking ? 10 : 20;
+        defender.health -= damage;
         if (defender.health <= 0) {
             defender.health = 0;
             defender.color = 'darkgrey';
@@ -138,15 +147,18 @@ function kick(attacker, defender) {
             defender.color = 'lightgrey';
             setTimeout(() => defender.color = defender.defaultColor, 200);
         }
+        defender.canAttack = false;
+        setTimeout(() => defender.canAttack = true, 1000);
     }
 }
 
 function punch(attacker, defender) {
-    if (defender.isDefeated) return;
+    if (defender.isDefeated || !attacker.canAttack) return;
     attacker.color = 'green';
     setTimeout(() => attacker.color = attacker.defaultColor, 200);
     if (isColliding(attacker, defender)) {
-        defender.health -= 10;
+        let damage = defender.isBlocking ? 5 : 10;
+        defender.health -= damage;
         if (defender.health <= 0) {
             defender.health = 0;
             defender.color = 'darkgrey';
@@ -155,6 +167,8 @@ function punch(attacker, defender) {
             defender.color = 'lightgrey';
             setTimeout(() => defender.color = defender.defaultColor, 200);
         }
+        defender.canAttack = false;
+        setTimeout(() => defender.canAttack = true, 1000);
     }
 }
 
