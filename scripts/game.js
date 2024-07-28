@@ -52,6 +52,8 @@ function resetGame() {
 
     document.getElementById('game-over').style.display = 'none';
     document.getElementById('start-over').style.display = 'none';
+
+    update();
 }
 
 function drawPlayer(player) {
@@ -217,6 +219,7 @@ function isColliding(player1, player2) {
     return !(player1.x + player1.width < player2.x ||
              player1.x > player2.x + player2.width ||
              player1.y + player1.height < player2.y ||
+            ```javascript
              player1.y > player2.y + player2.height);
 }
 
