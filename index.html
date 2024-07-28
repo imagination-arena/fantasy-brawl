@@ -5,14 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imagination Arena</title>
     <link rel="stylesheet" href="styles/style.css">
+    <style>
+        #game-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #game-over {
+            display: none;
+            color: white;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        #start-over {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <div id="game-container">
         <canvas id="game-canvas" width="800" height="600"></canvas>
-        <div id="game-over" style="display: none; color: white; text-align: center; font-size: 24px; margin-top: 20px;"></div>
-        <button id="start-over" style="display: none; margin-top: 20px;">Start Over?</button>
+        <div id="game-over">Player X Wins!</div>
+        <button id="start-over">Start Over?</button>
     </div>
-    <script src="scripts/game```html
     <script src="scripts/game.js"></script>
 </body>
 </html>
