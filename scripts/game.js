@@ -11,7 +11,8 @@ const player1 = {
     dx: 0,
     dy: 0,
     health: 100,
-    defaultColor: 'red'
+    defaultColor: 'red',
+    isDefeated: false
 };
 
 const player2 = {
@@ -24,7 +25,8 @@ const player2 = {
     dx: 0,
     dy: 0,
     health: 100,
-    defaultColor: 'blue'
+    defaultColor: 'blue',
+    isDefeated: false
 };
 
 function drawPlayer(player) {
@@ -49,9 +51,11 @@ function clear() {
 }
 
 function newPos(player) {
-    player.x += player.dx;
-    player.y += player.dy;
-    detectWalls(player);
+    if (!player.isDefeated) {
+        player.x += player.dx;
+        player.y += player.dy;
+        detectWalls(player);
+    }
 }
 
 function detectWalls(player) {
@@ -90,20 +94,24 @@ function moveLeft(player) {
 
 function keyDown(e) {
     // Player 1 controls
-    if (e.key === 'ArrowRight') moveRight(player1);
-    else if (e.key === 'ArrowLeft') moveLeft(player1);
-    else if (e.key === 'ArrowUp') moveUp(player1);
-    else if (e.key === 'ArrowDown') moveDown(player1);
-    else if (e.key === 'k') kick(player1, player2);
-    else if (e.key === 'p') punch(player1, player2);
+    if (!player1.isDefeated) {
+        if (e.key === 'ArrowRight') moveRight(player1);
+        else if (e.key === 'ArrowLeft') moveLeft(player1);
+        else if (e.key === 'ArrowUp') moveUp(player1);
+        else if (e.key === 'ArrowDown') moveDown(player1);
+        else if (e.key === 'k') kick(player1, player2);
+        else if (e.key === 'p') punch(player1, player2);
+    }
 
     // Player 2 controls
-    if (e.key === 'd') moveRight(player2);
-    else if (e.key === 'a') moveLeft(player2);
-    else if (e.key === 'w') moveUp(player2);
-    else if (e.key === 's') moveDown(player2);
-    else if (e.key === 'l') kick(player2, player1);
-    else if (e.key === ';') punch(player2, player1);
+    if (!player2.isDefeated) {
+        if (e.key === 'd') moveRight(player2);
+        else if (e.key === 'a') moveLeft(player2);
+        else if (e.key === 'w') moveUp(player2);
+        else if (e.key === 's') moveDown(player2);
+        else if (e.key === 'l') kick(player2, player1);
+        else if (e.key === ';') punch(player2, player1);
+    }
 }
 
 function keyUp(e) {
@@ -117,24 +125,36 @@ function keyUp(e) {
 }
 
 function kick(attacker, defender) {
+    if (defender.isDefeated) return;
     attacker.color = 'yellow';
     setTimeout(() => attacker.color = attacker.defaultColor, 200);
     if (isColliding(attacker, defender)) {
-        defender.color = 'lightgrey';
         defender.health -= 20;
-        if (defender.health < 0) defender.health = 0;
-        setTimeout(() => defender.color = defender.defaultColor, 200);
+        if (defender.health <= 0) {
+            defender.health = 0;
+            defender.color = 'darkgrey';
+            defender.isDefeated = true;
+        } else {
+            defender.color = 'lightgrey';
+            setTimeout(() => defender.color = defender.defaultColor, 200);
+        }
     }
 }
 
 function punch(attacker, defender) {
+    if (defender.isDefeated) return;
     attacker.color = 'green';
     setTimeout(() => attacker.color = attacker.defaultColor, 200);
     if (isColliding(attacker, defender)) {
-        defender.color = 'lightgrey';
         defender.health -= 10;
-        if (defender.health < 0) defender.health = 0;
-        setTimeout(() => defender.color = defender.defaultColor, 200);
+        if (defender.health <= 0) {
+            defender.health = 0;
+            defender.color = 'darkgrey';
+            defender.isDefeated = true;
+        } else {
+            defender.color = 'lightgrey';
+            setTimeout(() => defender.color = defender.defaultColor, 200);
+        }
     }
 }
 
