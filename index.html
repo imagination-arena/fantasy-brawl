@@ -9,6 +9,7 @@
         #game-container {
             text-align: center;
             margin-top: 20px;
+            position: relative;
         }
         #game-over {
             display: none;
@@ -22,6 +23,17 @@
             padding: 10px 20px;
             font-size: 16px;
         }
+        #controls-legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            text-align: left;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -29,6 +41,18 @@
         <canvas id="game-canvas" width="800" height="600"></canvas>
         <div id="game-over">Player X Wins!</div>
         <button id="start-over">Start Over?</button>
+        <div id="controls-legend">
+            <strong>Player 1:</strong><br>
+            Move: Arrow Keys<br>
+            Punch: P<br>
+            Kick: K<br>
+            Block: B<br><br>
+            <strong>Player 2:</strong><br>
+            Move: WASD<br>
+            Punch: ;<br>
+            Kick: L<br>
+            Block: O
+        </div>
     </div>
     <script src="scripts/game.js"></script>
 </body>
