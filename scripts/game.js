@@ -102,22 +102,20 @@ function keyUp(e) {
 }
 
 function kick(attacker, defender) {
+    attacker.color = 'yellow';
+    setTimeout(() => attacker.color = attacker.defaultColor, 200);
     if (isColliding(attacker, defender)) {
         defender.color = 'lightgrey';
         setTimeout(() => defender.color = defender.defaultColor, 200);
-    } else {
-        attacker.color = 'yellow';
-        setTimeout(() => attacker.color = attacker.defaultColor, 200);
     }
 }
 
 function punch(attacker, defender) {
+    attacker.color = 'green';
+    setTimeout(() => attacker.color = attacker.defaultColor, 200);
     if (isColliding(attacker, defender)) {
         defender.color = 'lightgrey';
         setTimeout(() => defender.color = defender.defaultColor, 200);
-    } else {
-        attacker.color = 'green';
-        setTimeout(() => attacker.color = attacker.defaultColor, 200);
     }
 }
 
