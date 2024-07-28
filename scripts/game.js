@@ -34,24 +34,7 @@ const player2 = {
 };
 
 function resetGame() {
-    player1.x = 50;
-    player1.y = 500;
-    player1.health = 100;
-    player1.color = player1.defaultColor;
-    player1.isDefeated = false;
-    player1.isBlocking = false;
-    player1.canAttack = true;
-
-    player2.x = 700;
-    player2.y = 500;
-    player2.health = 100;
-    player2.color = player2.defaultColor;
-    player2.isDefeated = false;
-    player2.isBlocking = false;
-    player2.canAttack = true;
-
-    document.getElementById('game-over').style.display = 'none';
-    document.getElementById('start-over').style.display = 'none';
+    location.reload(); // Refresh the page
 }
 
 function drawPlayer(player) {
