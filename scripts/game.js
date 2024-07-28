@@ -10,6 +10,7 @@ const player1 = {
     speed: 5,
     dx: 0,
     dy: 0,
+    health: 100,
     defaultColor: 'red'
 };
 
@@ -22,12 +23,25 @@ const player2 = {
     speed: 5,
     dx: 0,
     dy: 0,
+    health: 100,
     defaultColor: 'blue'
 };
 
 function drawPlayer(player) {
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.width, player.height);
+}
+
+function drawHealthBar(player, x, y) {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(x, y, 104, 24);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(x + 2, y + 2, 100, 20);
+    ctx.fillStyle = 'green';
+    ctx.fillRect(x + 2, y + 2, player.health, 20);
+    ctx.fillStyle = 'white';
+    ctx.font = '14px Arial';
+    ctx.fillText(`${player.health} / 100`, x + 34, y + 17);
 }
 
 function clear() {
@@ -37,7 +51,6 @@ function clear() {
 function newPos(player) {
     player.x += player.dx;
     player.y += player.dy;
-
     detectWalls(player);
 }
 
@@ -54,6 +67,8 @@ function update() {
     newPos(player2);
     drawPlayer(player1);
     drawPlayer(player2);
+    drawHealthBar(player1, 20, 20);
+    drawHealthBar(player2, canvas.width - 124, 20);
     requestAnimationFrame(update);
 }
 
@@ -106,6 +121,8 @@ function kick(attacker, defender) {
     setTimeout(() => attacker.color = attacker.defaultColor, 200);
     if (isColliding(attacker, defender)) {
         defender.color = 'lightgrey';
+        defender.health -= 20;
+        if (defender.health < 0) defender.health = 0;
         setTimeout(() => defender.color = defender.defaultColor, 200);
     }
 }
@@ -115,6 +132,8 @@ function punch(attacker, defender) {
     setTimeout(() => attacker.color = attacker.defaultColor, 200);
     if (isColliding(attacker, defender)) {
         defender.color = 'lightgrey';
+        defender.health -= 10;
+        if (defender.health < 0) defender.health = 0;
         setTimeout(() => defender.color = defender.defaultColor, 200);
     }
 }
