@@ -33,6 +33,27 @@ const player2 = {
     canAttack: true
 };
 
+function resetGame() {
+    player1.x = 50;
+    player1.y = 500;
+    player1.health = 100;
+    player1.color = player1.defaultColor;
+    player1.isDefeated = false;
+    player1.isBlocking = false;
+    player1.canAttack = true;
+
+    player2.x = 700;
+    player2.y = 500;
+    player2.health = 100;
+    player2.color = player2.defaultColor;
+    player2.isDefeated = false;
+    player2.isBlocking = false;
+    player2.canAttack = true;
+
+    document.getElementById('game-over').style.display = 'none';
+    document.getElementById('start-over').style.display = 'none';
+}
+
 function drawPlayer(player) {
     ctx.fillStyle = player.color;
     ctx.fillRect(player.x, player.y, player.width, player.height);
@@ -77,7 +98,27 @@ function update() {
     drawPlayer(player2);
     drawHealthBar(player1, 20, 20);
     drawHealthBar(player2, canvas.width - 124, 20);
+
+    if (player1.isDefeated || player2.isDefeated) {
+        displayGameOver();
+        return;
+    }
+
     requestAnimationFrame(update);
+}
+
+function displayGameOver() {
+    const gameOverText = document.getElementById('game-over');
+    const startOverButton = document.getElementById('start-over');
+
+    if (player1.isDefeated) {
+        gameOverText.textContent = 'Player 2 Wins!';
+    } else if (player2.isDefeated) {
+        gameOverText.textContent = 'Player 1 Wins!';
+    }
+
+    gameOverText.style.display = 'block';
+    startOverButton.style.display = 'block';
 }
 
 function moveUp(player) {
@@ -183,3 +224,6 @@ update();
 
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
+
+// Add event listener to the start over button
+document.getElementById('start-over').addEventListener('click', resetGame);
